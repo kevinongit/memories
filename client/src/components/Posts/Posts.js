@@ -12,7 +12,8 @@ const Posts = ({setCurrentId}) => {
   const classes = useStyles()
   console.log(posts)
   return !posts.length ? (
-    <CircularProgress />
+    // <CircularProgress />
+    <h5>No posts yet!</h5>
   ) : (
     <Grid
       className={classes.container}

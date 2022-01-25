@@ -2,10 +2,12 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import cors from 'cors'
+import dotenv from 'dotenv'
 
 import postRoutes from './routes/posts.js'
 
 const app = express()
+dotenv.config()
 
 const logger = () => (req, res, next) => {
   const log = `${req.method} ${req.url}`
@@ -21,11 +23,16 @@ app.use(logger())
 
 app.use('/posts', postRoutes)
 
-const CONNECTION_URL =
-  'mongodb+srv://dbuser:dbuser123@cluster0.wibe8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+app.get('/', (req, res) => {
+  res.send('Hello to Memories API')
+})
+
 const PORT = process.env.PORT || 5000
 mongoose
-  .connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+  .connect(process.env.MONGOOSE_CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() =>
     app.listen(PORT, () => console.log(`Server running on port : ${PORT}`)),
   )

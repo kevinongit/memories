@@ -1,21 +1,44 @@
-import {FETCH_ALL, CREATE, DELETE, UPDATE, LIKE} from '../constants/actionTypes'
+import {
+  FETCH_ALL,
+  FETCH_BY_SEARCH,
+  CREATE,
+  DELETE,
+  UPDATE,
+  LIKE,
+} from '../constants/actionTypes'
 
 /* eslint-disable import/no-anonymous-default-export */
-export default (posts = [], action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case UPDATE:
     case LIKE:
-      return posts.map(post =>
-        post._id === action.payload._id ? action.payload : post,
-      )
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post._id === action.payload._id ? action.payload : post,
+        ),
+      }
     case FETCH_ALL:
-      return action.payload
+      return {
+        ...state,
+        posts: action.payload.data,
+        currentPage: action.payload.currentPage,
+        numberOfPages: action.payload.numberOfPages,
+      }
+    case FETCH_BY_SEARCH:
+      return {
+        ...state,
+        posts: action.payload,
+      }
 
     case CREATE:
-      return [...posts, action.payload]
+      return {...state, posts: [...state.posts, action.payload]}
     case DELETE:
-      return posts.filter(p => p._id !== action.payload)
+      return {
+        ...state,
+        posts: state.posts.filter(p => p._id !== action.payload),
+      }
     default:
-      return posts
+      return state
   }
 }

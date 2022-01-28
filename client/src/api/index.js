@@ -12,7 +12,13 @@ endpoint.interceptors.request.use(req => {
   return req
 })
 
-export const fetchPosts = () => endpoint.get('/posts')
+export const fetchPosts = page => endpoint.get(`/posts?page=${page}`)
+export const fetchPostsBySearch = searchQuery =>
+  endpoint.get(
+    `/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${
+      searchQuery.tags
+    }`,
+  )
 export const createPost = newPost => endpoint.post('/posts', newPost)
 export const updatePost = (id, updatedPost) =>
   endpoint.patch(`/posts/${id}`, updatedPost)

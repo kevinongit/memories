@@ -13,6 +13,7 @@ endpoint.interceptors.request.use(req => {
 })
 
 export const fetchPosts = page => endpoint.get(`/posts?page=${page}`)
+export const fetchPost = id => endpoint.get(`/posts/${id}`)
 export const fetchPostsBySearch = searchQuery =>
   endpoint.get(
     `/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${

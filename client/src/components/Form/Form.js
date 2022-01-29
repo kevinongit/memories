@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
+import {useNavigate} from 'react-router-dom'
+
 import {TextField, Button, Typography, Paper} from '@material-ui/core'
 
 import FileBase from 'react-file-base64'
@@ -17,9 +19,11 @@ const emptyPost = {
 
 const Form = ({currentId, setCurrentId}) => {
   const [postData, setPostData] = useState(emptyPost)
-  const post = useSelector(state =>
-    currentId ? state.posts.find(p => p._id === currentId) : null,
-  )
+  const post = useSelector(state => {
+    console.log({state})
+    return currentId ? state.posts.posts.find(p => p._id === currentId) : null
+  })
+  const navigate = useNavigate()
 
   const user = JSON.parse(localStorage.getItem('profile'))
 
@@ -42,7 +46,7 @@ const Form = ({currentId, setCurrentId}) => {
     if (currentId) {
       dispatch(updatePost(currentId, {...postData, name: user?.result?.name}))
     } else {
-      dispatch(createPost({...postData, name: user?.result?.name}))
+      dispatch(createPost({...postData, name: user?.result?.name}, navigate))
     }
     clear()
     // console.log(postData)
@@ -59,7 +63,7 @@ const Form = ({currentId, setCurrentId}) => {
   }
 
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate

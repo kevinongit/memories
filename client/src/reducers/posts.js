@@ -1,6 +1,9 @@
 import {
   FETCH_ALL,
+  FETCH_POST,
   FETCH_BY_SEARCH,
+  START_LOADING,
+  END_LOADING,
   CREATE,
   DELETE,
   UPDATE,
@@ -8,8 +11,13 @@ import {
 } from '../constants/actionTypes'
 
 /* eslint-disable import/no-anonymous-default-export */
-export default (state = [], action) => {
+export default (state = {isLoading: false, posts: []}, action) => {
   switch (action.type) {
+    case START_LOADING:
+      return {...state, isLoading: true}
+    case END_LOADING:
+      return {...state, isLoading: false}
+
     case UPDATE:
     case LIKE:
       return {
@@ -29,6 +37,11 @@ export default (state = [], action) => {
       return {
         ...state,
         posts: action.payload,
+      }
+    case FETCH_POST:
+      return {
+        ...state,
+        post: action.payload,
       }
 
     case CREATE:

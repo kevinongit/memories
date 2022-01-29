@@ -8,12 +8,14 @@ import Post from './Post/Post'
 import useStyles from './styles'
 
 const Posts = ({setCurrentId}) => {
-  const {posts} = useSelector(state => state.posts)
+  const {posts, isLoading} = useSelector(state => state.posts)
   const classes = useStyles()
   console.log(posts)
-  return !posts?.length ? (
-    // <CircularProgress />
-    <h5>No posts yet!</h5>
+  if (!isLoading && !posts.length) {
+    return 'No posts yet!'
+  }
+  return isLoading ? (
+    <CircularProgress />
   ) : (
     <Grid
       className={classes.container}
